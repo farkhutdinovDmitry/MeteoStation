@@ -1,5 +1,8 @@
 #include "EspNetwork.h"
 
 EspNetwork::EspNetwork(BrokerCredentials brokerCredentials,
-                       WiFiCredentials wiFiCredentials)
-    : mqttClient(brokerCredentials), wiFi(wiFiCredentials) {}
+                       WiFiCredentials wiFiCredentials) {
+  wiFi(wiFiCredentials);
+  mqttClient(&wiFi, brokerCredentials);
+  wiFi.connect();
+}

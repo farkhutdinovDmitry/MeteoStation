@@ -1,9 +1,12 @@
 #include "WiFi.h"
 
 WiFi::WiFi(WiFiCredentials credentials) : credentials(credentials) {
-  isConnected = false;
   connectHandler = WiFi.onStationModeGotIP(onConnect);
   disconnectHandler = WiFi.onStationModeDisconnected(onDisconnect);
+}
+
+void WiFi::addObserver(WiFiObserver *observer) {
+  observers.push_back(observer);
 }
 
 void WiFi::connect() {
@@ -14,9 +17,14 @@ void WiFi::connect() {
 bool WiFi::isConnected() { return WiFi.isConnected(); }
 
 void WiFi::onConnect(const WiFiEventStationModeGotIP &event) {
-  // notify - how? pattern observer?
+  for (auto observer : observers) {
+    observer->onWiFiConnect();
+  }
 }
 
 void WiFi::onDisconnect(const WiFiEventStationModeDisconnected &event) {
+  for (auto observer : observers) {
+    observer->onWiFiDisconnect();
+  }
   reconnectTimer.once(2, connect);
 }

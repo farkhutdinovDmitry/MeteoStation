@@ -2,6 +2,8 @@
 #define WIFI_H
 
 //#include wifi environment
+#include "WiFiObserver.h"
+#include <vector>
 
 struct WiFiCredentials {
   const char *ssid;
@@ -14,10 +16,14 @@ struct WiFiCredentials {
 class WiFi {
 public:
   WiFi(WiFiCredentials credentials);
+  void connect();
+  bool isConnected();
+
+  void addObserver(WiFiObserver *observer);
 
 private:
   WiFiCredentials credentials;
-  bool isConnected;
+  std::vector<WiFiObserver *> observers;
 
   Ticker reconnectTimer;
   WiFiEventHandler connectHandler;

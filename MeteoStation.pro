@@ -11,6 +11,7 @@ SOURCES += \
         EspNetwork.cpp \
         MqttClient.cpp \
         WiFi.cpp \
+        WiFiObserver.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -21,4 +22,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     EspNetwork.h \
     MqttClient.h \
-    WiFi.h
+    WiFi.h \
+    WiFiObserver.h

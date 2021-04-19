@@ -2,6 +2,8 @@
 #define MQTTCLIENT_H
 
 // include mqtt environment
+#include "WiFi.h"
+#include "WiFiObserver.h"
 
 struct BrokerCredentials {
   const char *host;
@@ -21,14 +23,18 @@ struct BrokerCredentials {
   }
 };
 
-class MqttClient {
+class MqttClient : public WiFiObserver {
 public:
-  MqttClient(BrokerCredentials &credentials);
-  void connect();
+  MqttClient(WiFi *wiFi_, BrokerCredentials &credentials);
+  void connectToMqtt();
+  void onWiFiConnect() override;
+  void onWiFiDisconnect() override;
 
 private:
+  WiFi *wiFi;
   BrokerCredentials credentials;
   AsyncMqttClient mqttClient;
+  Ticker mqttReconnectTimer;
 
   void onMqttConnect(bool sessionPresent);
   void onMqttDisconnect(AsyncMqttClientDisconnectReason reason);
