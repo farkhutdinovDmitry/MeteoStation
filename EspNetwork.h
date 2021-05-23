@@ -8,6 +8,8 @@ class EspNetwork {
 public:
   EspNetwork(BrokerCredentials brokerCredentials,
              WiFiCredentials wiFiCredentials);
+  void publish(const char *, const char *message);
+  void connect();
 
 private:
   MqttClient mqttClient;

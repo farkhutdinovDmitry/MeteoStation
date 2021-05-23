@@ -8,6 +8,10 @@ MqttClient::MqttClient(WiFi *wiFi_, BrokerCredentials &credentials)
   wiFi->addObserver(this);
 }
 
+void MqttClient::publish(const char *address, const char *message) {
+  mqttClient.publish(address, 1, true, message);
+}
+
 void MqttClient::connectToMqtt() { mqttClient.connect(); }
 
 void MqttClient::onWiFiConnect() { connectToMqtt(); }

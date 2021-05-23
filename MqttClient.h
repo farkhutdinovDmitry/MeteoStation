@@ -26,6 +26,7 @@ struct BrokerCredentials {
 class MqttClient : public WiFiObserver {
 public:
   MqttClient(WiFi *wiFi_, BrokerCredentials &credentials);
+  void publish(const char *address, const char *message);
   void connectToMqtt();
   void onWiFiConnect() override;
   void onWiFiDisconnect() override;

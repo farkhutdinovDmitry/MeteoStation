@@ -1,8 +1,24 @@
-#include <QCoreApplication>
+#include "BmeWrapper.h"
+#include "EspNetwork.h"
+#include "State.h"
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
+Ticker loopTicker;
+BmeWrapper bme;
+State *state;
 
-    return a.exec();
+void loopTickerFunction() {
+  state->setTemp(bme.readTemperature());
+  state->setHumidity(bme.readHumidity());
+  state->setPressure(bme.readPressure());
 }
+
+void setup() {
+  BrokerCredentials brokerCredentials("test.mosquitto.org", 1883);
+  WiFiCredentials wiFiCredentias("TP-Link_513C", "55955430");
+  EspNetwork network(brokerCredentials, wiFiCredentias);
+  network.connect();
+  state = new State(network);
+  loopTicker.attach(10, loopTickerFunction);
+}
+
+void loop() {}
