@@ -2,6 +2,7 @@
 #define STATE_H
 
 #include "EspNetwork.h"
+#include <string>
 
 class State {
 public:
